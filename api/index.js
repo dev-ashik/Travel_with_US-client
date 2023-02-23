@@ -1,15 +1,20 @@
 const express = require("express");
-var cors = require("cors");
+const cors = require("cors");
 const mongoose = require("mongoose");
-var bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const User = require("./models/User");
 require("dotenv").config();
 
 const app = express();
 const port = 5000;
+
 const beryptSalt = bcrypt.genSaltSync(10);
+const jwtsecret = "dfsoiiuiuui";
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
@@ -17,9 +22,12 @@ app.use(
   })
 );
 
-mongoose.connect(process.env.MONGO_URL);
+mongoose.set("strictQuery", false);
+mongoose.connect(process.env.MONGO_URL, () => {
+  console.log("Connected to MongoDB");
+});
 
-app.get("/test", (req, res) => {
+app.get("/", (req, res) => {
   res.json("Hello world");
 });
 
@@ -43,15 +51,45 @@ app.post("/login", async (req, res) => {
 
   const userDoc = await User.findOne({ email });
   if (userDoc) {
-    res.json("found");
+    const passOk = bcrypt.compareSync(password, userDoc.password);
+    // console.log(userDoc)
+    if (passOk) {
+      jwt.sign(
+        {
+          email: userDoc.email,
+          id: userDoc._id,
+          // name: userDoc.name
+        },
+        jwtsecret,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie("token", token).json(userDoc);
+        }
+      );
+    } else {
+      res.status(422).json("password not ok");
+    }
   } else {
     res.json("not found");
+  }
+});
+
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+
+  if (token) {
+    jwt.verify(token, jwtsecret, {}, async (err, userData) => {
+      if (err) throw err;
+      // console.log(userData.id)
+      const { name, email, _id } = await User.findById(userData.id);
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json("Error");
   }
 });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-//   booking
-//   SwqF2h3bb04PNLiH
