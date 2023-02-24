@@ -77,6 +77,7 @@ app.post("/login", async (req, res) => {
 
 app.get("/profile", (req, res) => {
   const { token } = req.cookies;
+  // console.log(first);
 
   if (token) {
     jwt.verify(token, jwtsecret, {}, async (err, userData) => {
@@ -89,6 +90,11 @@ app.get("/profile", (req, res) => {
     res.json("Error");
   }
 });
+
+app.post('/logout', (req, res) => {
+  // res.cookie('token', "").json(true);
+  res.clearCookie('token').json(true);
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
