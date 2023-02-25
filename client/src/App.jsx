@@ -6,13 +6,12 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import axios from "axios";
 import { UserContextProvider } from "./UserContext";
+import AccountPage from "./pages/AccountPage";
 
 axios.defaults.baseURL = "http://127.0.0.1:5000";
 axios.defaults.withCredentials = true;
 
 function App() {
-
-
   return (
     <UserContextProvider>
       <Routes>
@@ -20,12 +19,14 @@ function App() {
           <Route index element={<IndexPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/account/:subpage?" element={<AccountPage />} />
+          <Route path="/account/:subpage/:action" element={<AccountPage />} />
         </Route>
       </Routes>
     </UserContextProvider>
   );
 }
 
-// Time: 01:48:38
+// Time: 03:03:54
 // link: https://www.youtube.com/watch?v=MpQbwtSiZ7E
 export default App;
