@@ -1,20 +1,22 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { PerksLabels } from "../components/PerksLabels";
+import PhotosUploader from "../components/PhotosUploader";
 
 export const PlacesPage = () => {
   const { action } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
-  const [photoLink, setPhotoLink] = useState("");
+  
   const [description, setDescription] = useState("");
   const [parks, setParks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
+  const [redirect, setRedirect] = useState('');
 
   const inputHeader = (text) => {
     return <h2 className="text-2xl mt-4">{text}</h2>;
@@ -31,16 +33,17 @@ export const PlacesPage = () => {
     );
   };
 
-  const addPhotoByLink =  async (ev)  => {
+  const addNewPlace = async (ev) => {
     ev.preventDefault();
-    const {data:filename} = await axios.post('/upload-by-link', {
-        link: photoLink
-    })
-    setAddedPhotos(prev => {
-        return [...prev, filename]
-    });
-    setPhotoLink('');
+    const palaceData = {title, address, addedPhotos, description, parks, extraInfo, checkIn, checkOut, maxGuests}
+    await axios.post('/places', palaceData);
+    setRedirect('/accout/places')
   }
+
+  if(redirect) {
+    return <Navigate to={redirect} />
+  }
+
 
   return (
     <div>
@@ -68,7 +71,7 @@ export const PlacesPage = () => {
       )}
       {action === "new" && (
         <div>
-          <form action="">
+          <form onSubmit={addNewPlace}>
             {preInput(
               "Title",
               "title for your place, should be short and catchy as in advertisment"
@@ -88,41 +91,9 @@ export const PlacesPage = () => {
             />
 
             {preInput("Photos", "more = better")}
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Add using link ...jpg"
-                value={photoLink}
-                onChange={(ev) => setPhotoLink(ev.target.value)}
-              />
-              <button className="bg-gray-200 px-4 rounded-2xl" onClick={addPhotoByLink}>
-                Add&nbsp;photo
-              </button>
-            </div>
-            <div className="mt-2 grid grid-cols-3 md:gird-cols-4 lg:grid-col-6">
-                {addedPhotos.length > 0 && addedPhotos.map(link => (
-                    <div>
-                        {link}
-                    </div>
-                )) }
-              <button className="border bg-transparent rounded-2xl p-4 text-2xl text-gray-600 flex justify-center gap-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-                  />
-                </svg>
-                upload
-              </button>
-            </div>
+            
+            <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos}/>
+            
             <h2 className="text-2xl mt-4">Description</h2>
             <p className="text-gray-500 text-sm">description of the place</p>
             <textarea

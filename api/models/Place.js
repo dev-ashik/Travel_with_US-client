@@ -5,7 +5,7 @@ const PlaceSehema = new mongoose.Schema({
     title: String,
     address: String,
     photos: [String],
-    description: Sting,
+    description: String,
     perks: [String],
     extraInfo: String,
     checkIn: Number,

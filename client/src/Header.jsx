@@ -4,7 +4,7 @@ import { UserContext } from './UserContext';
 
 export const Header = () => {
   const {user} = useContext(UserContext);
-  console.log(user);
+  // console.log(user);
 
 
   return (

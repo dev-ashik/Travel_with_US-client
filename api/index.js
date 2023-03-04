@@ -5,7 +5,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const imageDownloadr = require('image-downloader');
+const multer  = require('multer'); // to upload photo
+const fs = require('fs');
+
 const User = require("./models/User");
+const PlaceModel = require("./models/Place");
 require("dotenv").config();
 
 const app = express();
@@ -16,6 +20,7 @@ const jwtsecret = "dfsoiiuiuui";
 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname+'/uploads'));
 app.use(
   cors({
     credentials: true,
@@ -106,8 +111,36 @@ app.post('/upload-by-link', async (req, res) => {
     url: link,
     dest: __dirname + '/uploads/' + newName
   })
-
   res.json(newName);
+})
+
+const photoMiddleware = multer({ dest: 'uploads/' })
+app.post('/upload', photoMiddleware.array('photos', 100), (req, res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath);
+    // uploadedFiles.push(newPath.replace('uploads//', ''));
+  }
+  res.json(uploadedFiles);
+})
+
+app.post('/places', (req, res) => {
+  const { token } = req.cookies;
+  const { title, address, addedPhotos, description, perks, extraInfo, checkIn, CheckOut, maxGuests } = req.body;
+  jwt.verify(token, jwtsecret, {}, async (err, userData) => {
+    if (err) throw err;
+    const placeDoc = await PlaceModel.create({
+      owner: userData.id,
+      title, address, addedPhotos, description, perks, extraInfo, checkIn, CheckOut, maxGuests
+    });
+    res.json(placeDoc);
+  });
 })
 
 app.listen(port, () => {
