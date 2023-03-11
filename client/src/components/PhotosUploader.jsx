@@ -28,7 +28,7 @@ const PhotosUploader = ({addedPhotos, onChange}) => {
       })
       .then((response) => {
         const { data: filenames } = response;
-        console.log(data);
+        // console.log(data);
         onChange((prev) => {
           return [...prev, ...filenames];
         });
