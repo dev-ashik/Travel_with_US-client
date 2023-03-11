@@ -132,16 +132,56 @@ app.post('/upload', photoMiddleware.array('photos', 100), (req, res) => {
 
 app.post('/places', (req, res) => {
   const { token } = req.cookies;
-  const { title, address, addedPhotos, description, perks, extraInfo, checkIn, CheckOut, maxGuests } = req.body;
+  const { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests } = req.body;
+  console.log(perks)
   jwt.verify(token, jwtsecret, {}, async (err, userData) => {
     if (err) throw err;
     const placeDoc = await PlaceModel.create({
       owner: userData.id,
-      title, address, addedPhotos, description, perks, extraInfo, checkIn, CheckOut, maxGuests
+      title, address, photos:addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests
     });
     res.json(placeDoc);
   });
 })
+
+app.get('/getplaces', (req, res) => {
+  const { token } = req.cookies;
+
+  jwt.verify(token, jwtsecret, {}, async (err, userData) => {
+    const {id} = userData;
+    const allPlaces = await PlaceModel.find({owner:id});
+    res.json(allPlaces);
+  });
+});
+
+app.get('/places/:id', async (req, res) => {
+  const {id} = req.params;
+  const place = await PlaceModel.findById(id);
+  res.json(place);
+});
+    
+app.put('/places', async (req, res) => {
+  const { token } = req.cookies;
+  const { id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests } = req.body;
+
+
+  jwt.verify(token, jwtsecret, {}, async (err, userData) => {
+    if(err) throw err;
+    const placeDoc = await PlaceModel.findById(id);
+
+    // console.log(userData.id);
+    // console.log(placeDoc.owner.toString());
+    if(userData.id === placeDoc.owner.toString()) {
+      placeDoc.set({
+        title, address, photos:addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests
+      })
+      await placeDoc.save();
+      res.json('ok');
+    }
+  });
+} )
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
