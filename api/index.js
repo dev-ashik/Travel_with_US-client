@@ -132,7 +132,7 @@ app.post('/upload', photoMiddleware.array('photos', 100), (req, res) => {
 
 app.post('/places', (req, res) => {
   const { token } = req.cookies;
-  const { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests } = req.body;
+  const { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price } = req.body;
   // console.log(perks)
   jwt.verify(token, jwtsecret, {}, async (err, userData) => {
     if (err) throw err;
@@ -187,6 +187,8 @@ app.get('/places', async (req, res) => {
   const allPlaces = await PlaceModel.find();
   res.json(allPlaces);
 })
+
+
 
 
 
