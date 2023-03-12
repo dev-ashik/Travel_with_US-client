@@ -35,9 +35,17 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
       });
   };
 
-  const removePhoto = (filename) => {
+  const removePhoto = (ev, filename) => {
+    ev.preventDefault();
     onChange([...addedPhotos.filter((photo) => photo !== filename)]);
   };
+
+  const selectAsMainPhoto = (ev, filename) => {
+    ev.preventDefault();
+    const addPhotosWithoutSelected = addedPhotos.filter((photo) => photo !== filename);
+    const newAddedPhotos = [filename, ...addPhotosWithoutSelected]
+    onChange(newAddedPhotos);
+  }
 
   return (
     <>
@@ -66,7 +74,7 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
                 alt="uploaded photo"
               />
               <button
-                onClick={() => removePhoto(link)}
+                onClick={(ev) => removePhoto(ev, link)}
                 className="absolute bottom-1 right-1 text-white bg-black py-2 px-3 bg-opacity-50 rounded-xl cursor-pointer"
               >
                 <svg
@@ -85,7 +93,7 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
                 </svg>
               </button>
               <button
-                onClick={() => selectAsMainPhoto(link)}
+                onClick={(ev) => selectAsMainPhoto(ev, link)}
                 className="absolute bottom-1 left-1 text-white bg-black py-2 px-3 bg-opacity-50 rounded-xl cursor-pointer"
               >
                 {link === addedPhotos[0] ? (
