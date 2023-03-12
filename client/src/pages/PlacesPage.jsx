@@ -7,7 +7,7 @@ export const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    axios.get("/getplaces").then(({ data }) => {
+    axios.get("/user-places").then(({ data }) => {
       setPlaces(data);
       // console.log(data);
     });
