@@ -1,30 +1,83 @@
-import React from 'react'
+import { differenceInCalendarDays } from "date-fns";
+import React, { useState } from "react";
 
-export const BookingWidget = ({place}) => {
+export const BookingWidget = ({ place }) => {
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  let numberOfNight = 0;
+  if (checkIn && checkOut) {
+    numberOfNight = differenceInCalendarDays(
+      new Date(checkOut),
+      new Date(checkIn)
+    );
+  }
+
+  const bookThisPlace = async () => {
+    const data = { checkIn, checkOut, numberOfGuests, name, phone, place:place.id, price:numberOfNight*place.price };
+    await axios.post("/bookings", data);
+  };
+
   return (
     <div>
-        <div className="bg-white shadow p-4 rounded-2xl">
-                <div className="text-2xl text-center">
-                  Price: ${place.price} / per night
-                </div>
-                <div className="border rounded-2xl mt-4">
-                  <div className="flex">
-                    <div className="py-3 px-4 flex-1">
-                      <label htmlFor="">Check in:</label>
-                      <input type="date" />
-                    </div>
-                    <div className="py-3 px-4 flex-1 border-l">
-                      <label htmlFor="">Check out:</label>
-                      <input type="date" />
-                    </div>
-                  </div>
-                  <div className="py-3 px-4 border-t">
-                    <label htmlFor="">Number of guests:</label>
-                    <input type="number" value={1} />
-                  </div>
-                </div>
-                <button className="primary mt-4">Book this place</button>
-              </div>
+      <div className="bg-white shadow p-4 rounded-2xl">
+        <div className="text-2xl text-center">
+          Price: ${place.price} / per night
+        </div>
+        <div className="border rounded-2xl mt-4">
+          <div className="flex">
+            <div className="py-3 px-4 flex-1">
+              <label htmlFor="checkIn">Check in:</label>
+              <input
+                type="date"
+                name="checkIn"
+                value={checkIn}
+                onChange={(ev) => setCheckIn(ev.target.value)}
+              />
+            </div>
+            <div className="py-3 px-4 flex-1 border-l">
+              <label htmlFor="checkOut">Check out:</label>
+              <input
+                type="date"
+                name="checkOut"
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="py-3 px-4 border-t">
+            <label htmlFor="">Number of guests:</label>
+            <input
+              type="number"
+              value={numberOfGuests}
+              onChange={(ev) => setNumberOfGuests(ev.target.value)}
+            />
+          </div>
+          {numberOfNight > 0 && (
+            <div className="py-3 px-4 border-t">
+              <label htmlFor="">Your full name:</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(ev) => setName(ev.target.value)}
+              />
+              <label htmlFor="">Phone number:</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(ev) => setPhone(ev.target.value)}
+              />
+            </div>
+          )}
+        </div>
+        <button onClick={bookThisPlace} className="primary mt-4">
+          Book this place{" "}
+          {numberOfNight > 0 && <span>${numberOfNight * place.price}</span>}
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
