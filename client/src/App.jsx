@@ -27,13 +27,12 @@ function App() {
           <Route path="/account/places/new" element={<PlacesFormPage />} />
           <Route path="/account/places/:id" element={<PlacesFormPage />} />
           <Route path="/place/:id" element={<PlacePage />} />
-
         </Route>
       </Routes>
     </UserContextProvider>
   );
 }
 
-// Time: 05:19:43
+// Time: 05:40:49
 // link: https://www.youtube.com/watch?v=MpQbwtSiZ7E
 export default App;
