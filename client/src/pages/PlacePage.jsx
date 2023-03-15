@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { BookingWidget } from "../components/BookingWidget";
 
 export const PlacePage = () => {
   const { id } = useParams();
@@ -62,7 +63,7 @@ export const PlacePage = () => {
       {!place ? (
         <div>Loading...</div>
       ) : (
-        <div className="mt-4 bg-gray-100 -mx-8 px-8 py-8">
+        <div className="mt-4 bg-gray-100 -mx-8 px-8 pt-8">
           <h1 className="text-3xl">{place.title}</h1>
           <a
             className="flex gap-1 my-3 block font-semibold underline"
@@ -96,8 +97,9 @@ export const PlacePage = () => {
               <div>
                 {place.photos?.[0] && (
                   <img
+                    onClick={() =>setShowAllPhotos(true)}
                     src={"http://localhost:5000/" + place.photos[0]}
-                    className="aspect-square object-cover"
+                    className="aspect-square object-cover cursor-pointer"
                     alt="first photo"
                   />
                 )}
@@ -105,16 +107,18 @@ export const PlacePage = () => {
               <div className="grid">
                 {place.photos?.[1] && (
                   <img
+                    onClick={() =>setShowAllPhotos(true)}
                     src={"http://localhost:5000/" + place.photos[1]}
-                    className="aspect-square object-cover"
+                    className="aspect-square object-cover cursor-pointer"
                     alt="first photo"
                   />
                 )}
                 <div className="overflow-hidden">
                   {place.photos?.[2] && (
                     <img
+                      onClick={() =>setShowAllPhotos(true)}
                       src={"http://localhost:5000/" + place.photos[2]}
-                      className="aspect-square object-cover relative top-2"
+                      className="aspect-square object-cover relative top-2 cursor-pointer"
                       alt="first photo"
                     />
                   )}
@@ -141,12 +145,12 @@ export const PlacePage = () => {
             </button>
           </div>
 
-          <div className="my-4">
-            <h2 className="font-semibold text-2xl">Description</h2>
-            {place.description}
-          </div>
-          <div className="grid grid-cols-2">
+          <div className="mt-8 mb-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
             <div>
+              <div className="my-4">
+                <h2 className="font-semibold text-2xl">Description</h2>
+                {place.description}
+              </div>
               Check-in: {place.checkIn}
               <br />
               Check-out: {place.checkOut}
@@ -154,9 +158,15 @@ export const PlacePage = () => {
               Max number of guests: {place.maxGuests}
             </div>
             <div>
-              <div className="bg-gray-300 p-4 rounded-2xl">
-                Price: {place.price} / per night
-              </div>
+              <BookingWidget place={place} />
+            </div>
+          </div>
+          <div className="bg-white -mx-8 px-8 py-8 border-t">
+            <div>
+              <h2 className="font-semibold text-2xl">Extra info</h2>
+            </div>
+            <div className="mb-4 mt-2 text-sm text-gray-700 leading-5">
+              {place.extraInfo}
             </div>
           </div>
         </div>

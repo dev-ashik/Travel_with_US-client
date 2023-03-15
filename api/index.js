@@ -10,6 +10,7 @@ const fs = require('fs');
 
 const User = require("./models/User");
 const PlaceModel = require("./models/Place");
+const BookingsModel = require("./models/Booking");
 require("dotenv").config();
 
 const app = express();
@@ -188,7 +189,15 @@ app.get('/places', async (req, res) => {
   res.json(allPlaces);
 })
 
-
+app.post('/bookings', async (req, res) => {
+  const {place, checkIn, checkOut, numberOfGuests, name, phone} = req.body;
+  BookingsModel.create({
+    place, checkIn, checkOut, numberOfGuests, name, phone
+  }).then((err, doc)=>{
+    if(err) throw err;
+    res.json(doc);
+  })
+})
 
 
 
