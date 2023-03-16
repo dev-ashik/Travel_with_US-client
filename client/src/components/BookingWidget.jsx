@@ -1,6 +1,8 @@
+import axios from "axios";
 import { differenceInCalendarDays } from "date-fns";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 export const BookingWidget = ({ place }) => {
   const [checkIn, setCheckIn] = useState("");
@@ -8,7 +10,16 @@ export const BookingWidget = ({ place }) => {
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState('');
+
+  const {user} = useContext(UserContext);
+
+  useEffect(() => {
+    if(user) {
+      setName(user.name);
+    }
+  }, [user]);
+  
 
   let numberOfNight = 0;
   if (checkIn && checkOut) {
@@ -19,17 +30,20 @@ export const BookingWidget = ({ place }) => {
   }
 
   const bookThisPlace = async () => {
-    const data = { checkIn, checkOut, numberOfGuests, name, phone, place:place.id, price:numberOfNight*place.price };
+    const data = { checkIn, checkOut, numberOfGuests, name, phone, place:place._id, price:numberOfNight*place.price };
     
     const response = await axios.post("/bookings", data);
     const bookingId = response.data._id;
-    console.log(bookingId)
+    setRedirect(`/account/booking/${bookingId}`)
+    // console.log(bookingId)
   };
 
   if(redirect) {
-    <Navigate to={`/account/bookings`} />
+    console.log(redirect);
+    return <Navigate to={redirect} />
   }
 
+  let totalPrice = numberOfNight * place.price * numberOfGuests;
   return (
     <div>
       <div className="bg-white shadow p-4 rounded-2xl">
@@ -84,7 +98,7 @@ export const BookingWidget = ({ place }) => {
         </div>
         <button onClick={bookThisPlace} className="primary mt-4">
           Book this place{" "}
-          {numberOfNight > 0 && <span>${numberOfNight * place.price}</span>}
+          {numberOfNight > 0 && <span>${totalPrice}</span>}
         </button>
       </div>
     </div>

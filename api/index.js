@@ -34,6 +34,15 @@ mongoose.connect(process.env.MONGO_URL, () => {
   console.log("Connected to MongoDB");
 });
 
+const getuserDataFromReq = (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtsecret, {}, async (err, userData) => {
+      if(err) throw err;
+      resolve(userData);
+    });
+  })
+}
+
 app.get("/", (req, res) => {
   res.json("Hello world");
 });
@@ -190,16 +199,24 @@ app.get('/places', async (req, res) => {
 })
 
 app.post('/bookings', async (req, res) => {
-  const {place, checkIn, checkOut, numberOfGuests, name, phone} = req.body;
+  const userData = await getuserDataFromReq(req);
+  const {place, checkIn, checkOut, numberOfGuests, name, phone, price} = req.body;
   BookingsModel.create({
-    place, checkIn, checkOut, numberOfGuests, name, phone
-  }).then((err, doc)=>{
-    if(err) throw err;
+    place, checkIn, checkOut, numberOfGuests, name, phone, price, user:userData.id
+  }).then(( doc)=>{
     res.json(doc);
-  })
+  }).catch(()=>{
+    throw err;
+  });
 })
 
 
+app.get('/bookings', async (req, res) => {
+  const userData = await getuserDataFromReq(req);
+  const bookingsData = await BookingsModel.find({user:userData.id}).populate('place');
+  // console.log(bookingsData)
+  res.json(bookingsData);
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
