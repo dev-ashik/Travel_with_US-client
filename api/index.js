@@ -213,8 +213,8 @@ app.post('/bookings', async (req, res) => {
 
 app.get('/bookings', async (req, res) => {
   const userData = await getuserDataFromReq(req);
-  const bookingsData = await BookingsModel.find({user:userData.id});
-  console.log(bookingsData)
+  const bookingsData = await BookingsModel.find({user:userData.id}).populate('place');
+  // console.log(bookingsData)
   res.json(bookingsData);
 })
 
