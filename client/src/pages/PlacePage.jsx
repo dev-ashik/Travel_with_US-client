@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { AddressLink } from "../components/AddressLink";
 import { BookingWidget } from "../components/BookingWidget";
 import { PlaceGallery } from "../components/PlaceGallery";
 
@@ -28,33 +29,7 @@ export const PlacePage = () => {
       ) : (
         <div className="mt-4 bg-gray-100 -mx-8 px-8 pt-8">
           <h1 className="text-3xl">{place.title}</h1>
-          <a
-            className="flex gap-1 my-3 block font-semibold underline"
-            target="_blank"
-            href={"https://maps.google.com/?q=" + place.address}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-              />
-            </svg>
-
-            {place.title}
-          </a>
+          <AddressLink>{place.address}</AddressLink>
           {/* Place gallery */}
           <PlaceGallery place={place}/>
 
