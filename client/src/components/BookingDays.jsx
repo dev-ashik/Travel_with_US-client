@@ -5,7 +5,7 @@ import { differenceInCalendarDays } from "date-fns/esm";
 export const BookingDays = ({ booking, className }) => {
   return (
     <div>
-      <div className={"flex gap-1"+ className}>
+      <div className={"flex gap-1" + className}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

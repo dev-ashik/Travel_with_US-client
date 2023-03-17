@@ -13,7 +13,6 @@ export const BookingsPage = () => {
     });
   }, []);
 
-  // console.log(bookings)
   return (
     <div>
       <AccounntNav />
@@ -34,7 +33,7 @@ export const BookingsPage = () => {
                 </h2>
 
                 <div className="text-xl">
-                  <BookingDays booking={booking} className={'text-gray-500'} />
+                  <BookingDays booking={booking} className={"text-gray-500"} />
 
                   <div className="flex gap-1 items-center">
                     <svg

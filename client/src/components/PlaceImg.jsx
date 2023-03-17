@@ -9,7 +9,7 @@ export const PlaceImg = ({ place, index=0, className=null }) => {
         className='object-cover'
     }
   return (
-    <div>
+    <div className="h-full w-full">
       <img className={`h-full w-full ${className}`} src={'http://localhost:5000/'+place.photos[0]} alt="image" />
     </div>
   );

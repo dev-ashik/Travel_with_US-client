@@ -11,7 +11,6 @@ export const IndexPage = () => {
     });
   }, []);
 
-  console.log(places);
   return (
     <div className="mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-col-3 lg:grid-cols-4">
       {places.length > 0 &&
@@ -21,7 +20,7 @@ export const IndexPage = () => {
               {place.photos?.[0] && (
                 <img
                   src={"http://localhost:5000/" + place.photos?.[0]}
-                  className='rounded-2xl object-cover aspect-square'
+                  className='rounded-2xl object-cover aspect-square w-full'
                   alt="photo"
                 />
               )}

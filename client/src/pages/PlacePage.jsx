@@ -8,7 +8,6 @@ import { PlaceGallery } from "../components/PlaceGallery";
 export const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
-  
 
   useEffect(() => {
     if (!id) {
@@ -20,8 +19,6 @@ export const PlacePage = () => {
     }
   }, [id]);
 
-  
-
   return (
     <>
       {!place ? (
@@ -31,7 +28,7 @@ export const PlacePage = () => {
           <h1 className="text-3xl">{place.title}</h1>
           <AddressLink>{place.address}</AddressLink>
           {/* Place gallery */}
-          <PlaceGallery place={place}/>
+          <PlaceGallery place={place} />
 
           <div className="mt-8 mb-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
             <div>

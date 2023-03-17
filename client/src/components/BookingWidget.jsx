@@ -10,16 +10,15 @@ export const BookingWidget = ({ place }) => {
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [redirect, setRedirect] = useState('');
+  const [redirect, setRedirect] = useState("");
 
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if(user) {
+    if (user) {
       setName(user.name);
     }
   }, [user]);
-  
 
   let numberOfNight = 0;
   if (checkIn && checkOut) {
@@ -30,17 +29,25 @@ export const BookingWidget = ({ place }) => {
   }
 
   const bookThisPlace = async () => {
-    const data = { checkIn, checkOut, numberOfGuests, name, phone, place:place._id, price:numberOfNight*place.price };
-    
+    const data = {
+      checkIn,
+      checkOut,
+      numberOfGuests,
+      name,
+      phone,
+      place: place._id,
+      price: numberOfNight * place.price,
+    };
+
     const response = await axios.post("/bookings", data);
     const bookingId = response.data._id;
-    setRedirect(`/account/booking/${bookingId}`)
+    setRedirect(`/account/booking/${bookingId}`);
     // console.log(bookingId)
   };
 
-  if(redirect) {
+  if (redirect) {
     console.log(redirect);
-    return <Navigate to={redirect} />
+    return <Navigate to={redirect} />;
   }
 
   let totalPrice = numberOfNight * place.price * numberOfGuests;
@@ -97,8 +104,7 @@ export const BookingWidget = ({ place }) => {
           )}
         </div>
         <button onClick={bookThisPlace} className="primary mt-4">
-          Book this place{" "}
-          {numberOfNight > 0 && <span>${totalPrice}</span>}
+          Book this place {numberOfNight > 0 && <span>${totalPrice}</span>}
         </button>
       </div>
     </div>
