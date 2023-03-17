@@ -37,6 +37,4 @@ function App() {
   );
 }
 
-// Time: 06:46:09
-// link: https://www.youtube.com/watch?v=MpQbwtSiZ7E
 export default App;
