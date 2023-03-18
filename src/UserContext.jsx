@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { createContext,  useEffect,  useState } from 'react';
+import { serverPort } from './Port';
 
 export const UserContext = createContext({})
 
@@ -9,7 +10,7 @@ export const UserContextProvider = ({children}) => {
 
     useEffect(() => {
         if (!user) {
-          axios.get("/profile")
+          axios.get(`${serverPort}/profile`)
           .then(response => {
               setUser(response.data);
               setReady(true);

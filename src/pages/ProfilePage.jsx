@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { AccounntNav } from "../components/AccounntNav";
+import { serverPort } from "../Port";
 import { UserContext } from "../UserContext";
 import { PlacesPage } from "./PlacesPage";
 
@@ -14,7 +15,7 @@ const ProfilePage = () => {
   }
 
   const logout = async () => {
-    await axios.post("/logout");
+    await axios.post(`${serverPort}/logout`);
     setUser(null);
     setRedirect("/");
   };

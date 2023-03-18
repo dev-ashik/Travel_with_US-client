@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { AddressLink } from "../components/AddressLink";
 import { BookingDays } from "../components/BookingDays";
 import { PlaceGallery } from "../components/PlaceGallery";
+import { serverPort } from "../Port";
 
 export const BookingPage = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ export const BookingPage = () => {
 
   useEffect(() => {
     if (id) {
-      axios.get("/bookings").then((response) => {
+      axios.get(`${serverPort}/bookings`).then((response) => {
         const foundBooking = response.data.find(({ _id }) => _id === id);
         if (foundBooking) {
           setBooking(foundBooking);

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { serverPort } from "../Port";
 
 export const RegisterPage = () => {
   const [name, setname] = useState("");
@@ -11,7 +12,7 @@ export const RegisterPage = () => {
     ev.preventDefault();
     // console.log(ev.target.value);
     try {
-      await axios.post('/register', {
+      await axios.post(`${serverPort}/register`, {
         name,
         email,
         password

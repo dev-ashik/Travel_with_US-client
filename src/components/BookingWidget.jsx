@@ -2,6 +2,7 @@ import axios from "axios";
 import { differenceInCalendarDays } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { serverPort } from "../Port";
 import { UserContext } from "../UserContext";
 
 export const BookingWidget = ({ place }) => {
@@ -39,7 +40,7 @@ export const BookingWidget = ({ place }) => {
       price: numberOfNight * place.price,
     };
 
-    const response = await axios.post("/bookings", data);
+    const response = await axios.post(`${serverPort}/bookings`, data);
     const bookingId = response.data._id;
     setRedirect(`/account/booking/${bookingId}`);
     // console.log(bookingId)

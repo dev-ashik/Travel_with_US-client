@@ -4,15 +4,17 @@ import { Link } from "react-router-dom";
 import { AccounntNav } from "../components/AccounntNav";
 import { BookingDays } from "../components/BookingDays";
 import { PlaceImg } from "../components/PlaceImg";
+import { serverPort } from "../Port";
 
 export const BookingsPage = () => {
   const [bookings, setBookings] = useState([]);
   useEffect(() => {
-    axios.get("/bookings").then((response) => {
+    axios.get(`https://travel-with-us.onrender.com/bookings`).then((response) => {
       setBookings(response.data);
     });
   }, []);
 
+  console.log(bookings)
   return (
     <div>
       <AccounntNav />
@@ -25,7 +27,7 @@ export const BookingsPage = () => {
               className="flex gap-4 bg-gray-200 rounded-xl overflow-hidden"
             >
               <div className="w-48">
-                <PlaceImg place={booking.place} />
+                {/* <PlaceImg place={booking.place} /> */}
               </div>
               <div className="py-3 pr-3 grow">
                 <h2 className="text-xl border-b border-gray-300 mb-2 pb-2">

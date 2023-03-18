@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AccounntNav } from "../components/AccounntNav";
 import { PlaceImg } from "../components/PlaceImg";
+import { serverPort } from "../Port";
 
 export const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    axios.get("/user-places").then(({ data }) => {
+    axios.get(`${serverPort}/user-places`).then(({ data }) => {
       setPlaces(data);
       // console.log(data);
     });

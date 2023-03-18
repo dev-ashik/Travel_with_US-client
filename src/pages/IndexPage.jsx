@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { serverPort } from "../Port";
 
 export const IndexPage = () => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    axios.get("/places").then((response) => {
+    axios.get(`${serverPort}/places`).then((response) => {
       setPlaces(response.data);
     });
   }, []);
