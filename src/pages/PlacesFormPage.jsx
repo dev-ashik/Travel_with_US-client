@@ -4,6 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { AccounntNav } from "../components/AccounntNav";
 import { PerksLabels } from "../components/PerksLabels";
 import PhotosUploader from "../components/PhotosUploader";
+import { serverPort } from "../Port";
 
 export const PlacesFormPage = () => {
     const {id} = useParams();
@@ -26,7 +27,7 @@ export const PlacesFormPage = () => {
         return;
     } 
     else {
-        axios.get('/places/'+id)
+        axios.get(`${serverPort}/places/`+id)
         .then(response => {
             const {data} = response;
             setTitle(data.title);
@@ -80,12 +81,12 @@ export const PlacesFormPage = () => {
     if(id) {
         // update place
 
-          await axios.put("/places", {id, ...palaceData});
+          await axios.put(`${serverPort}/places`, {id, ...palaceData});
           setRedirect(true);
     }
     else {
         // add new place
-          await axios.post("/places", palaceData);
+          await axios.post(`${serverPort}/places`, palaceData);
           setRedirect(true);
     }
     

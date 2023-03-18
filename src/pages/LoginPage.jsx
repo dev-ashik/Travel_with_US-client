@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { serverPort } from "../Port";
 import { UserContext } from "../UserContext";
 
 export const LoginPage = () => {
@@ -14,7 +15,7 @@ export const LoginPage = () => {
     ev.preventDefault();
 
     try {
-      const response = await axios.post("/login", { email, password }, {withCredentials: true});
+      const response = await axios.post(`${serverPort}/login`, { email, password }, {withCredentials: true});
       setUser(response.data);
       // console.log(response.data);
       alert("Login Successful");

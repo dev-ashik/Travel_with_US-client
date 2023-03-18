@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { AddressLink } from "../components/AddressLink";
 import { BookingWidget } from "../components/BookingWidget";
 import { PlaceGallery } from "../components/PlaceGallery";
+import { serverPort } from "../Port";
 
 export const PlacePage = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export const PlacePage = () => {
     if (!id) {
       return;
     } else {
-      axios.get(`/places/${id}`).then((response) => {
+      axios.get(`${serverPort}/places/${id}`).then((response) => {
         setPlace(response.data);
       });
     }

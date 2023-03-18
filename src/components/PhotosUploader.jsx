@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { serverPort } from "../Port";
 
 const PhotosUploader = ({ addedPhotos, onChange }) => {
   const [photoLink, setPhotoLink] = useState("");
@@ -23,7 +24,7 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
     }
 
     axios
-      .post("/upload", data, {
+      .post(`${serverPort}/upload`, data, {
         headers: { "Content-type": "multipart/from-data" },
       })
       .then((response) => {
