@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { serverPort } from "../Port";
 
 export const PlaceGallery = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -18,7 +19,7 @@ export const PlaceGallery = ({ place }) => {
           {place.photos?.[0] && (
             <img
               onClick={() => setShowAllPhotos(true)}
-              src={"http://localhost:5000/" + place.photos[0]}
+              src={`${serverPort}/` + place.photos[0]}
               className="aspect-square object-cover cursor-pointer w-full"
               alt="first photo"
             />
@@ -28,7 +29,7 @@ export const PlaceGallery = ({ place }) => {
           {place.photos?.[1] && (
             <img
               onClick={() => setShowAllPhotos(true)}
-              src={"http://localhost:5000/" + place.photos[1]}
+              src={`${serverPort}/` + place.photos[1]}
               className="aspect-square object-cover cursor-pointer w-full"
               alt="first photo"
             />
@@ -37,7 +38,7 @@ export const PlaceGallery = ({ place }) => {
             {place.photos?.[2] && (
               <img
                 onClick={() => setShowAllPhotos(true)}
-                src={"http://localhost:5000/" + place.photos[2]}
+                src={`${serverPort}/` + place.photos[2]}
                 className="aspect-square object-cover relative top-2 cursor-pointer w-full"
                 alt="first photo"
               />
@@ -97,7 +98,7 @@ const ShowAllPhoto = ({ place, setShowAllPhotos }) => {
             <div key={index}>
               <img
                 className="w-full"
-                src={"http://localhost:5000/" + photo}
+                src={`${serverPort}/` + photo}
                 alt="img"
               />
             </div>
