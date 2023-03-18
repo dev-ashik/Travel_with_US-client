@@ -20,7 +20,7 @@ export const IndexPage = () => {
             <div className="bg-gray-500 mb-2 rounded-2xl flex">
               {place.photos?.[0] && (
                 <img
-                  src={"http://localhost:5000/" + place.photos?.[0]}
+                  src={`${serverPort}/` + place.photos?.[0]}
                   className='rounded-2xl object-cover aspect-square w-full'
                   alt="photo"
                 />

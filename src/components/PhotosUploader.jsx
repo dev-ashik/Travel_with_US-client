@@ -71,7 +71,7 @@ const PhotosUploader = ({ addedPhotos, onChange }) => {
             <div key={link} className="h-32 flex relative">
               <img
                 className="rounded-2xl h-32 w-full object-cover"
-                src={"http://localhost:5000/" + link}
+                src={`${serverPort}/` + link}
                 alt="uploaded photo"
               />
               <button
