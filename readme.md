@@ -1,6 +1,6 @@
 ## site photo
 
-![name-of-you-image](./src/assets/react.svg)
+![name-of-you-image](./src/assets/Travel_with_US-client-cover.png)
 
 # client site
 
