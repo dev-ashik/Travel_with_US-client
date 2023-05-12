@@ -13,7 +13,8 @@ import { PlacePage } from "./pages/PlacePage";
 import { BookingsPage } from "./pages/BookingsPage";
 import { BookingPage } from "./pages/BookingPage";
 
-axios.defaults.baseURL = "http://127.0.0.1:5000";
+// axios.defaults.baseURL = "http://127.0.0.1:5000";
+axios.defaults.baseURL = "https://travel-with-us.onrender.com";
 axios.defaults.withCredentials = true;
 
 function App() {
